@@ -1,0 +1,225 @@
+{
+  "nodes": [
+    {
+      "id": "End",
+      "name": "End",
+      "node_type": "End",
+      "function_name": null,
+      "docstring": null,
+      "source_location": null,
+      "metadata": {}
+    },
+    {
+      "id": "Order Status Agent",
+      "name": "Order Status Agent",
+      "node_type": "Agent",
+      "source_location": {
+        "file": "examples/code/openai_agents/agent.py",
+        "line": 100,
+        "col": 0,
+        "end_line": 115,
+        "end_col": 1
+      },
+      "metadata": {
+        "variable_name": "order_status_agent",
+        "tool_names": [
+          "get_order_status"
+        ],
+        "handoff_refs": []
+      },
+      "function_name": null,
+      "docstring": null
+    },
+    {
+      "id": "Product Info Agent",
+      "name": "Product Info Agent",
+      "node_type": "Agent",
+      "source_location": {
+        "file": "examples/code/openai_agents/agent.py",
+        "line": 117,
+        "col": 0,
+        "end_line": 132,
+        "end_col": 1
+      },
+      "metadata": {
+        "variable_name": "product_info_agent",
+        "tool_names": [
+          "get_product_info"
+        ],
+        "handoff_refs": []
+      },
+      "function_name": null,
+      "docstring": null
+    },
+    {
+      "id": "Start",
+      "name": "Start",
+      "node_type": "Start",
+      "function_name": null,
+      "docstring": null,
+      "source_location": null,
+      "metadata": {}
+    },
+    {
+      "id": "Triage Agent",
+      "name": "Triage Agent",
+      "node_type": "Agent",
+      "source_location": {
+        "file": "examples/code/openai_agents/agent.py",
+        "line": 134,
+        "col": 0,
+        "end_line": 151,
+        "end_col": 1
+      },
+      "metadata": {
+        "variable_name": "triage_agent",
+        "tool_names": [],
+        "handoff_refs": [
+          "order_status_agent",
+          "product_info_agent",
+          "order_status_agent"
+        ]
+      },
+      "function_name": null,
+      "docstring": null
+    },
+    {
+      "id": "get_order_status",
+      "name": "get_order_status",
+      "function_name": "get_order_status",
+      "docstring": "Looks up the status of a given order ID.\n\nArgs:\n    order_id: The unique identifier for the order (e.g., ORD-12345).",
+      "node_type": "CustomTool",
+      "source_location": {
+        "file": "examples/code/openai_agents/agent.py",
+        "line": 36,
+        "col": 0,
+        "end_line": 60,
+        "end_col": 55
+      },
+      "metadata": {
+        "custom": true
+      }
+    },
+    {
+      "id": "get_product_info",
+      "name": "get_product_info",
+      "function_name": "get_product_info",
+      "docstring": "Provides information about a product based on its SKU.\n\nArgs:\n    product_sku: The Stock Keeping Unit (SKU) of the product (e.g., SKU-TECH-001).",
+      "node_type": "CustomTool",
+      "source_location": {
+        "file": "examples/code/openai_agents/agent.py",
+        "line": 63,
+        "col": 0,
+        "end_line": 91,
+        "end_col": 89
+      },
+      "metadata": {
+        "custom": true
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "Order Status Agent",
+      "target": "End",
+      "edge_type": "implicit_end",
+      "condition": {},
+      "metadata": {}
+    },
+    {
+      "source": "Order Status Agent",
+      "target": "get_order_status",
+      "edge_type": "tool_usage",
+      "condition": {},
+      "metadata": {
+        "definition_location": {
+          "file": "examples/code/openai_agents/agent.py",
+          "line": 100,
+          "col": 0,
+          "end_line": 115,
+          "end_col": 1
+        }
+      }
+    },
+    {
+      "source": "Product Info Agent",
+      "target": "End",
+      "edge_type": "implicit_end",
+      "condition": {},
+      "metadata": {}
+    },
+    {
+      "source": "Product Info Agent",
+      "target": "get_product_info",
+      "edge_type": "tool_usage",
+      "condition": {},
+      "metadata": {
+        "definition_location": {
+          "file": "examples/code/openai_agents/agent.py",
+          "line": 117,
+          "col": 0,
+          "end_line": 132,
+          "end_col": 1
+        }
+      }
+    },
+    {
+      "source": "Start",
+      "target": "Triage Agent",
+      "edge_type": "implicit_start",
+      "condition": {},
+      "metadata": {}
+    },
+    {
+      "source": "Triage Agent",
+      "target": "Order Status Agent",
+      "edge_type": "handoff",
+      "condition": {},
+      "metadata": {
+        "definition_location": {
+          "file": "examples/code/openai_agents/agent.py",
+          "line": 134,
+          "col": 0,
+          "end_line": 151,
+          "end_col": 1
+        },
+        "handoff_ref": "order_status_agent"
+      }
+    },
+    {
+      "source": "Triage Agent",
+      "target": "Order Status Agent",
+      "edge_type": "handoff",
+      "condition": {},
+      "metadata": {
+        "definition_location": {
+          "file": "examples/code/openai_agents/agent.py",
+          "line": 134,
+          "col": 0,
+          "end_line": 151,
+          "end_col": 1
+        },
+        "handoff_ref": "order_status_agent"
+      }
+    },
+    {
+      "source": "Triage Agent",
+      "target": "Product Info Agent",
+      "edge_type": "handoff",
+      "condition": {},
+      "metadata": {
+        "definition_location": {
+          "file": "examples/code/openai_agents/agent.py",
+          "line": 134,
+          "col": 0,
+          "end_line": 151,
+          "end_col": 1
+        },
+        "handoff_ref": "product_info_agent"
+      }
+    }
+  ],
+  "metadata": {
+    "framework": "OpenAI_Agents"
+  }
+}
